@@ -1,11 +1,11 @@
 package model;
 
 public enum Suit {
-    HEARTS("H"), CLUBS("C"), SPADES("S"), DIAMONDS("D");
+    HEARTS('H'), CLUBS('C'), SPADES('S'), DIAMONDS('D');
 
-    public final String shortSign;
+    public final char shortSign;
 
-    private Suit(String shortSign){
+    Suit(char shortSign){
         this.shortSign = shortSign;
     }
 }
