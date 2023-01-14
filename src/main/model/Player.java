@@ -11,6 +11,7 @@ public class Player {
 
     private List<Card> cards;
     private int sameValueCount = 0;
+    private int score;
 
     private Boolean isRoyalFlush;
     private Boolean isFourOfKind;
@@ -68,19 +69,22 @@ public class Player {
 
     private boolean isFourOfKind(){
         if (sameValueCount == 0){
-            return countSameValue() == 4;
+            return countSameValue().containsValue(4);
         }
         return sameValueCount == 4;
     }
 
     private boolean isThreeOfKind(){
         if (sameValueCount == 0){
-            return countSameValue() == 3;
+            return countSameValue().containsValue(3);
         }
         return sameValueCount == 3;
     }
 
     private boolean isFullHouse(){
+        if(findPairs().keySet().containsAll(countSameValue().keySet())){ // so we avoid the option when 3D 3S 3D 5H 10C is considered a full house
+            return false;
+        }
         return isThreeOfKind() && findPairs().size() == 1;
     }
 
@@ -102,7 +106,7 @@ public class Player {
         return true;
     }
 
-    private int countSameValue(){
+    private Map<Integer, Integer> countSameValue(){
         Map<Integer, Integer> sameValueCards = new HashMap<>();
         for(int i = 0; i != cards.size() - 1; i++){
             if (cards.get(i).getValue() == cards.get(i+1).getValue())
@@ -112,11 +116,7 @@ public class Player {
                     sameValueCards.put(cards.get(i).getValue(), sameValueCards.get(cards.get(i).getValue()) + 1);
                 }
         }
-        if (sameValueCards.isEmpty())
-            return 0;
-        return sameValueCards.entrySet()
-                .stream()
-                .max(Map.Entry.comparingByValue()).get().getValue();
+        return sameValueCards;
     }
 
     private Map<Integer, Integer> findPairs(){

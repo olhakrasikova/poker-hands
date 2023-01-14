@@ -5,6 +5,7 @@ import main.model.Player;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Stream;
@@ -43,26 +44,10 @@ public class PokerEngine {
         Player player1 = new Player(cardListP1);
         Player player2 = new Player(cardListP2);
 
-//        System.out.println("Player 1: "+ player1);
-//        System.out.println("Player 2: "+ player2);
-
-//        System.out.println();
-
-//        System.out.println("Player 1: "+ player1.getPlayersScore());
-//        System.out.println("Player 2: "+ player2.getPlayersScore());
-
-//        System.out.println();
         if (player1.getPlayersScore() == player2.getPlayersScore()){
-            System.out.println(player1.getCards().toString() + " score: " + player1.getPlayersScore() + "\n" + player2.getCards().toString() + " score: " + player2.getPlayersScore());
-            System.out.println();
+            handleEqualScore(player1,player2);
         }
         if (player1.getPlayersScore() > player2.getPlayersScore()) {
-            System.out.print("Player 1: "+ player1.getCards());
-            System.out.println("Player 1: "+ player1.getPlayersScore());
-            System.out.print("Player 2: "+ player2.getCards());
-            System.out.println("Player 2: "+ player2.getPlayersScore());
-            System.out.println();
-
             return 1;
         }
         else return 0;
@@ -79,6 +64,13 @@ public class PokerEngine {
             case 'A' -> 14;
             default -> Character.getNumericValue(value);
         };
+    }
+
+    private void handleEqualScore(Player player1, Player player2){
+        if(player1.getPlayersScore() < 100 && player2.getPlayersScore() < 100){
+            player1.setScore(player1.getHighestCard().getValue());
+            player2.setScore(player2.getHighestCard().getValue());
+        }
     }
 
 }
