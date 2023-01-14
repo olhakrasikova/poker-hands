@@ -140,7 +140,6 @@ public class Player {
     }
 
     private List<Card> sortCards(List<Card> cards){
-//        cards.sort(Comparator.comparingInt(Card::getValue));
         List<Card>sortedList=cards.stream().sorted(Comparator.comparingInt(Card :: getValue)).toList();
         return sortedList;
     }
