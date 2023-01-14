@@ -1,4 +1,4 @@
-package model;
+package main.model;
 
 public enum Suit {
     HEARTS('H'), CLUBS('C'), SPADES('S'), DIAMONDS('D');

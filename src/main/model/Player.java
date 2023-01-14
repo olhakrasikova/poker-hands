@@ -1,4 +1,4 @@
-package model;
+package main.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,17 +10,15 @@ import java.util.*;
 public class Player {
 
     private List<Card> cards;
-    private int score = 0;
     private int sameValueCount = 0;
 
-    private boolean isRoyalFlush;
-    private boolean isFourOfKind;
-    private boolean isFullHouse;
-    private boolean isStraightFlush;
-    private boolean isThreeOfKind;
-
-    private boolean isFlush;
-    private boolean isStraight;
+    private Boolean isRoyalFlush;
+    private Boolean isFourOfKind;
+    private Boolean isFullHouse;
+    private Boolean isStraightFlush;
+    private Boolean isThreeOfKind;
+    private Boolean isFlush;
+    private Boolean isStraight;
     private Map<Integer, Integer> pairsCount;
     private Card highestCard;
 
@@ -28,7 +26,7 @@ public class Player {
 
 
     public Player(List<Card> cards){
-        this.cards = cards;
+        this.cards = sortCards(cards);
         isRoyalFlush = isRoyalFlush();
         isStraightFlush = isStraightFlush();
         isFourOfKind = isFourOfKind();
@@ -39,6 +37,19 @@ public class Player {
         pairsCount = findPairs();
         highestCard = findHighestValueCard();
 
+    }
+
+    public int getPlayersScore(){
+        if (isRoyalFlush) return 200;
+        if (isStraightFlush) return 150;
+        if (isFourOfKind) return 140;
+        if (isFullHouse) return 130;
+        if(isFlush) return 120;
+        if(isStraight) return 110;
+        if(isThreeOfKind) return 100;
+        if (pairsCount.size() == 2) return Collections.max(pairsCount.keySet())*2 + 40;
+        if (pairsCount.size() == 1) return Collections.max(pairsCount.keySet()) + 20;
+        return highestCard.getValue();
     }
 
     private boolean isRoyalFlush(){
@@ -92,15 +103,20 @@ public class Player {
     }
 
     private int countSameValue(){
-        Set<Card> sameValueCards = new HashSet<>();
+        Map<Integer, Integer> sameValueCards = new HashMap<>();
         for(int i = 0; i != cards.size() - 1; i++){
-            if(cards.get(i).getValue() == cards.get(i+1).getValue()){
-//                System.out.println("i = " + i + " card 1 " + cards.get(i) + " \ncard2: " + cards.get(i+1));
-                sameValueCards.add(cards.get(i));
-                sameValueCards.add(cards.get(i+1));
-            }
+            if (cards.get(i).getValue() == cards.get(i+1).getValue())
+                if (sameValueCards.get(cards.get(i).getValue()) == null) {
+                    sameValueCards.put(cards.get(i).getValue(), 2);
+                }else {
+                    sameValueCards.put(cards.get(i).getValue(), sameValueCards.get(cards.get(i).getValue()) + 1);
+                }
         }
-        return sameValueCards.size();
+        if (sameValueCards.isEmpty())
+            return 0;
+        return sameValueCards.entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue()).get().getValue();
     }
 
     private Map<Integer, Integer> findPairs(){
@@ -108,7 +124,7 @@ public class Player {
         for(int i = 1; i < cards.size(); i++){
             if (cards.get(i).getValue() == cards.get(i-1).getValue())
                 if (pairs.get(cards.get(i).getValue()) == null) {
-                    pairs.put(cards.get(i).getValue(), 1);
+                    pairs.put(cards.get(i).getValue(), 1 );
                     i++; // skipping card with index i, not to compare it with next card and create a new pair
                 }else {
                     pairs.put(cards.get(i).getValue(), 2);
@@ -121,6 +137,12 @@ public class Player {
 
     private Card findHighestValueCard(){
         return cards.stream().max(Comparator.comparing(Card::getValue)).get();
+    }
+
+    private List<Card> sortCards(List<Card> cards){
+//        cards.sort(Comparator.comparingInt(Card::getValue));
+        List<Card>sortedList=cards.stream().sorted(Comparator.comparingInt(Card :: getValue)).toList();
+        return sortedList;
     }
 
     @Override

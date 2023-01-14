@@ -1,4 +1,4 @@
-package model;
+package main.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,9 +14,8 @@ public class Card {
 
     @Override
     public String toString() {
-        return "Card{" +
-                "value=" + value +
-                ", suit=" + suit +
-                '}';
+        return value +
+                " " + suit
+                ;
     }
 }

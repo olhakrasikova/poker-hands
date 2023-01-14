@@ -1,8 +1,7 @@
-package engine;
+package main.engine;
 
-import model.Card;
-import model.Player;
-import model.Suit;
+import main.model.Card;
+import main.model.Player;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,13 +12,14 @@ import java.util.stream.Stream;
 public class PokerEngine {
 
     public void calculate(String fileName){
+        int player1Wins = 0;
         try
         {
             FileInputStream fis=new FileInputStream(fileName);
             Scanner sc=new Scanner(fis);
             while(sc.hasNextLine())
             {
-                getPlayersCards(sc.nextLine());
+                player1Wins += getPlayersCardsAndScores(sc.nextLine());
             }
             sc.close();
         }
@@ -27,9 +27,10 @@ public class PokerEngine {
         {
             e.printStackTrace();
         }
+        System.out.println(player1Wins);
     }
 
-    private void getPlayersCards(String line){
+    private int getPlayersCardsAndScores(String line){
 
         List<Card> cardListP1 = Stream.of(line.substring(0, line.length()/2).trim().split(" "))
                 .map(card -> new Card(handleNotNumericCardValues(card.charAt(0)), card.charAt(1))).toList();
@@ -42,10 +43,25 @@ public class PokerEngine {
         Player player1 = new Player(cardListP1);
         Player player2 = new Player(cardListP2);
 
-        System.out.println("Player 1: "+ player1);
-        System.out.println("Player 2: "+ player2);
+//        System.out.println("Player 1: "+ player1);
+//        System.out.println("Player 2: "+ player2);
 
+//        System.out.println();
+
+//        System.out.println("Player 1: "+ player1.getPlayersScore());
+//        System.out.println("Player 2: "+ player2.getPlayersScore());
+
+//        System.out.println();
+        if (player1.getPlayersScore() == player2.getPlayersScore()){
+            System.out.println(player1.getCards().toString() + " score: " + player1.getPlayersScore() + "\n" + player2.getCards().toString() + " score: " + player2.getPlayersScore());
+            System.out.println();
+        }
+        if (player1.getPlayersScore() > player2.getPlayersScore())
+            return 1;
+
+        else return 0;
     }
+
 
 
     private int handleNotNumericCardValues(char value){
