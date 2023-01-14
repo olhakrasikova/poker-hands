@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 public class PokerEngine {
 
-    public void calculate(String fileName){
+    public int calculate(String fileName){
         int player1Wins = 0;
         try
         {
@@ -27,7 +27,7 @@ public class PokerEngine {
         {
             e.printStackTrace();
         }
-        System.out.println(player1Wins);
+        return player1Wins;
     }
 
     private int getPlayersCardsAndScores(String line){
@@ -56,9 +56,15 @@ public class PokerEngine {
             System.out.println(player1.getCards().toString() + " score: " + player1.getPlayersScore() + "\n" + player2.getCards().toString() + " score: " + player2.getPlayersScore());
             System.out.println();
         }
-        if (player1.getPlayersScore() > player2.getPlayersScore())
-            return 1;
+        if (player1.getPlayersScore() > player2.getPlayersScore()) {
+            System.out.print("Player 1: "+ player1.getCards());
+            System.out.println("Player 1: "+ player1.getPlayersScore());
+            System.out.print("Player 2: "+ player2.getCards());
+            System.out.println("Player 2: "+ player2.getPlayersScore());
+            System.out.println();
 
+            return 1;
+        }
         else return 0;
     }
 

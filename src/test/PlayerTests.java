@@ -6,9 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 public class PlayerTests {
 
@@ -131,13 +129,13 @@ public class PlayerTests {
 
     @Test
     public void testFindHighestValue(){
-        List<Card> cards = new ArrayList<>();
-        cards.add(new Card(6, 'H'));
-        cards.add( new Card(5, 'H'));
-        cards.add( new Card(10, 'H'));
-        cards.add(new Card(14, 'H'));
-        cards.add(new Card(7, 'H'));
-        Player player1 = new Player(cards);
+        List<Card> cards1 = new ArrayList<>();
+        cards1.add(new Card(6, 'H'));
+        cards1.add( new Card(5, 'H'));
+        cards1.add( new Card(10, 'H'));
+        cards1.add(new Card(14, 'H'));
+        cards1.add(new Card(7, 'H'));
+        Player player1 = new Player(cards1);
         Assert.assertEquals(14, player1.getHighestCard().getValue());
 
 
@@ -151,6 +149,5 @@ public class PlayerTests {
         Assert.assertEquals(5, player2.getHighestCard().getValue());
 
     }
-
 
 }
